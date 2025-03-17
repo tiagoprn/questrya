@@ -1,0 +1,19 @@
+# production
+flask
+flasgger  # to provide swagger documentation
+psycopg2-binary
+Flask-Migrate
+Flask-SQLAlchemy
+flask-bcrypt
+flask-jwt-extended
+celery
+gunicorn
+python-decouple
+python-json-logger
+
+# development
+ipdb
+coverage
+pytest
+pytest-cov
+pytest-sugar
