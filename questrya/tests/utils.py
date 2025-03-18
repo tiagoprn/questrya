@@ -1,4 +1,3 @@
-
 from questrya.models import User
 
 

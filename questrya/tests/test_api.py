@@ -59,9 +59,7 @@ class TestUserAPI:
         assert isinstance(new_user_uuid, str)
 
     def test_login_successful(self, test_client, db_session):
-        create_user_response = self.submit_create_user_request(test_client=test_client)
-        new_user_uuid = create_user_response.json['uuid']
-
+        _ = self.submit_create_user_request(test_client=test_client)
         login_response = self.submit_login_request(test_client=test_client)
         assert login_response.status_code == 200
 
@@ -77,7 +75,6 @@ class TestUserAPI:
 
         login_response = self.submit_login_request(test_client=test_client)
         access_token = login_response.json['access_token']
-        refresh_token = login_response.json['refresh_token']
 
         headers = {'Authorization': f'Bearer {access_token}'}
         response = test_client.get('/user', headers=headers)
@@ -93,8 +90,7 @@ class TestUserAPI:
         assert response.json == expected_json_response
 
     def test_get_new_jwt_temporary_token_when_logged_in(self, test_client, db_session):
-        create_user_response = self.submit_create_user_request(test_client=test_client)
-        new_user_uuid = create_user_response.json['uuid']
+        _ = self.submit_create_user_request(test_client=test_client)
 
         login_response = self.submit_login_request(test_client=test_client)
         assert login_response.status_code == 200
