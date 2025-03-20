@@ -4,6 +4,8 @@ alembic==1.15.1
     # via flask-migrate
 amqp==5.3.1
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 asttokens==3.0.0
     # via stack-data
 attrs==25.3.0
@@ -118,6 +120,10 @@ ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.3
     # via stack-data
+pydantic==2.10.6
+    # via -r requirements.in
+pydantic-core==2.27.2
+    # via pydantic
 pygments==2.19.1
     # via
     #   ipython
@@ -168,6 +174,8 @@ traitlets==5.14.3
 typing-extensions==4.12.2
     # via
     #   alembic
+    #   pydantic
+    #   pydantic-core
     #   sqlalchemy
 tzdata==2025.1
     # via

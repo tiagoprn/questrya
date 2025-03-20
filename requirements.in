@@ -10,6 +10,7 @@ celery
 gunicorn
 python-decouple
 python-json-logger
+pydantic
 
 # development
 ipdb

@@ -26,7 +26,7 @@ def create_app():
 
     init_jwt(app)
 
-    from questrya.api import api_blueprint
+    from questrya.api import register_blueprints
 
-    app.register_blueprint(api_blueprint)
+    register_blueprints(app)
     return app

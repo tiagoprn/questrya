@@ -109,7 +109,7 @@ The architecture is scalable, testable, and follows SOLID principles without int
 ### Key Characteristics
 
 - **Feature-Oriented**: Each slice represents an independent feature rather than a technical layer.
-- **Encapsulation**: All necessary logic for a feature (UI, application logic, persistence) resides within its slice.
+- **Encapsulation**: All necessary logic for a feature (business logic, orm, API, service, etc...) resides within its slice.
 - **Independence**: Slices are designed to minimize dependencies between each other, promoting modularity.
 - **Improves Maintainability**: Changes to a feature impact only its corresponding slice, reducing the risk of breaking unrelated functionality.
 - **Scalability**: Easier to scale teams since developers can work on separate slices without conflicts.
@@ -148,7 +148,7 @@ questrya/
 │   │   ├── game_tasks.py      # Game-related background tasks
 │   │   └── user_tasks.py      # User-related background tasks
 │   └── schedules.py           # Scheduled tasks configuration
-├── persistence/               # Database configuration
+├── orm/               # Database configuration
 │   ├── __init__.py
 │   └── models.py              # ORM models (thin)
 ├── api/                       # API configuration
@@ -159,9 +159,16 @@ questrya/
 └── settings.py                # Configuration
 ```
 
-### Components breakdown diagram
+### Overview
 
-![Components breakdown diagram](./images/png/vertical-slice-architecture-detailed.png)
+| LAYER              | ROLE                                                                                 | CAN COMMUNICATE with     | MUST NOT COMMUNICATE with                             |
+|--------------------|--------------------------------------------------------------------------------------|--------------------------|-------------------------------------------------------|
+| Schemas            | request/response serialization/validation                                            | pydantic                 | ORM models, Repositories, Domain, Services, Routes    |
+| Routes             | API endpoints                                                                        | Services, Schemas        | Repositories, Domain, ORM models                      |
+| Services           | use cases (orchestrate domain & repositories)                                        | Repositories, Domain     | ORM models, Routes                                    |
+| Domain (Core Logic)| pure python objects with business logic                                              | Nothing                  | ORM models, Repositories, Services, Routes            |
+| Repositories       | persistence (translation between ORM & pure domain objects, ORM read/write queries)  | ORM models, Domain       | Services, Routes                                      |
+| ORM models         | thin SQLAlchemy models                                                               | SQLAlchemy               | Domain, Repositories, Services, Routes                |
 
 ### Key Concepts Explained
 
@@ -216,7 +223,7 @@ class Game:
 
 Repositories abstract data access logic and provide methods to retrieve and persist domain objects. They act as collection-like interfaces for domain objects.
 
-**Example:** `GameRepository` handling game persistence and retrieval.
+**Example:** `GameRepository` handling game orm and retrieval.
 
 ```python
 # games/repository.py
@@ -381,7 +388,7 @@ Persistence layer defines database models and handles database-specific configur
 **Example:** Thin ORM models.
 
 ```python
-# persistence/models.py
+# orm/models.py
 class GameModel(db.Model):
     __tablename__ = 'games'
 

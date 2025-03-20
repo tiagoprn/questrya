@@ -89,6 +89,7 @@ def init_db(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
-    # models must be imported here so that the migrations app detect them
+    # ORM models must be imported here so that the migrations app detect them
+    from questrya.orm.models import UserORMModel
 
     migrate.init_app(app, db)

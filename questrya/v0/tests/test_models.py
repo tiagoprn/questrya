@@ -12,7 +12,7 @@ def create_user():
     return new_user
 
 
-class TestUserModel:
+class TestUserORMModel:
     def test_register_user_with_hashed_password_must_be_successful(self, db_session):
         new_user = create_user()
         assert new_user.uuid
