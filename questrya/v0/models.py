@@ -2,7 +2,7 @@ from questrya.extensions import db, bcrypt
 
 """
 Available datatypes:
-https://docs.sqlalchemy.org/en/13/core/type_basics.html
+https://docs.sqlalchemy.org/en/latest/core/type_basics.html
 """
 
 

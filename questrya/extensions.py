@@ -1,7 +1,7 @@
 """
 This module is used to create extensions, according to the recommendation
 from the official flask docs for app factories:
-https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/#factories-extensions
+https://flask.palletsprojects.com/en/stable/patterns/appfactories/#factories-extensions
 """
 
 from celery import Celery
