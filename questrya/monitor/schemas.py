@@ -7,8 +7,6 @@ MUST NOT communicate with: ORM models, Repositories, Domain, Services, Routes
 This must contain serialization/validations rules used by the APIs
 """
 
-from uuid import UUID
-
 from pydantic import BaseModel
 
 

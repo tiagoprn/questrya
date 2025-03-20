@@ -1,8 +1,11 @@
 import re
 
+
 class InvalidEmailError(ValueError):
     """Raised when an invalid email is provided."""
+
     pass
+
 
 class Email:
     """Value Object for Email with validation and immutability."""
@@ -11,7 +14,7 @@ class Email:
 
     def __init__(self, address: str):
         if not self._is_valid_email(address):
-            raise InvalidEmailError(f"Invalid email address: {address}")
+            raise InvalidEmailError(f'Invalid email address: {address}')
         self._address = address.lower()  # Normalize to lowercase
 
     def __eq__(self, other):

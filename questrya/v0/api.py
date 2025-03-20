@@ -1,18 +1,9 @@
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from random import randint
 
-import flask
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token,
-    jwt_required,
-    get_jwt_identity,
-)
+from flask import Blueprint, jsonify
 from questrya.exceptions import APIError
-from questrya.models import User
-from questrya.settings import VERSION
 from questrya.tasks import compute, generate_random_string
 
 api_blueprint = Blueprint('api', __name__)

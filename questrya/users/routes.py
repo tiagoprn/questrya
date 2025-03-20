@@ -7,7 +7,7 @@ MUST NOT communicate with: Domain, Repositories, ORM models
 This must have all the API endpoints
 """
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from questrya.common.schemas import (
     GenericClientResponseError,

@@ -1,9 +1,3 @@
-from datetime import datetime
-from typing import Union
-from uuid import uuid4
-
-from sqlalchemy.dialects.postgresql import UUID
-
 from questrya.extensions import db, bcrypt
 
 """

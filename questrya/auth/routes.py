@@ -9,10 +9,9 @@ This must have all the API endpoints
 
 from datetime import timedelta
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from flask_jwt_extended import (
     create_access_token,
-    create_refresh_token,
     jwt_required,
     get_jwt_identity,
 )
@@ -91,9 +90,7 @@ def token_refresh():
             identity=identity, expires_delta=timedelta(hours=1)
         )
         return (
-            TokenRefreshResponseSuccess(
-                access_token=new_access_token
-            ).model_dump(),
+            TokenRefreshResponseSuccess(access_token=new_access_token).model_dump(),
             200,
         )
     except ValueError as e:

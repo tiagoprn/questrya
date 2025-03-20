@@ -36,7 +36,5 @@ class User:
         if email:
             self.email = Email(email)
         if password:
-            self.password_hash = bcrypt.generate_password_hash(
-                password
-            ).decode('utf-8')
+            self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
         self.last_updated_at = datetime.utcnow()

@@ -7,16 +7,10 @@ MUST NOT communicate with: Domain, Repositories, ORM models
 This must have all the API endpoints
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import flask
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token,
-    jwt_required,
-    get_jwt_identity,
-)
+from flask import Blueprint
 
 from questrya.common.schemas import (
     GenericClientResponseError,
