@@ -90,6 +90,6 @@ def init_db(app):
     db.init_app(app)
 
     # ORM models must be imported here so that the migrations app detect them
-    from questrya.orm.models import UserORMModel
+    from questrya.sql_db.models import UserSQLModel
 
     migrate.init_app(app, db)

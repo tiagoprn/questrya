@@ -7,7 +7,7 @@ MUST NOT communicate with: Services, Routes
 This must be a translation layer between the ORM and the pure domain objects
 """
 
-from questrya.orm.models import UserORMModel
+from questrya.sql_db.models import UserSQLModel
 from questrya.extensions import db
 from questrya.users.domain import User
 from uuid import UUID
@@ -23,17 +23,17 @@ class UserRepository:
 
     @staticmethod
     def get_by_uuid(uuid: UUID) -> User:
-        db_user = UserORMModel.query.filter_by(uuid=uuid).first()
+        db_user = UserSQLModel.query.filter_by(uuid=uuid).first()
         return UserRepository.to_domain(user_model=db_user)
 
     @staticmethod
     def get_by_email(email) -> User:
-        db_user = UserORMModel.query.filter_by(email=email).first()
+        db_user = UserSQLModel.query.filter_by(email=email).first()
         return UserRepository.to_domain(user_model=db_user)
 
     @staticmethod
     def get_by_username(username) -> User:
-        db_user = UserORMModel.query.filter_by(username=username).first()
+        db_user = UserSQLModel.query.filter_by(username=username).first()
         return UserRepository.to_domain(user_model=db_user)
 
     @staticmethod
@@ -45,7 +45,7 @@ class UserRepository:
         return UserRepository.to_domain(user_model=db_user)
 
     @staticmethod
-    def to_domain(user_model: UserORMModel) -> User:
+    def to_domain(user_model: UserSQLModel) -> User:
         return User(
             uuid=user_model.uuid,
             username=user_model.username,
@@ -54,8 +54,8 @@ class UserRepository:
         )
 
     @staticmethod
-    def from_domain(user: User) -> UserORMModel:
-        return UserORMModel(
+    def from_domain(user: User) -> UserSQLModel:
+        return UserSQLModel(
             uuid=user.uuid,
             username=user.username,
             email=user.email.address,  # Assuming Email is a Value Object with an 'address' property

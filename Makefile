@@ -125,7 +125,7 @@ dev-infra-start: clean  ## Start docker infrastructure containers for developmen
 dev-infra-stop: clean  ## Stop docker infrastructure containers
 	@docker compose stop
 
-dev-infra-delete: docker-compose-stop  ## Delete docker infrastructure containers
+dev-infra-delete: dev-infra-stop  ## Delete docker infrastructure containers
 	@docker compose rm -f
 
 dev-infra-quick-recreate-containers:  dev-infra-delete dev-infra-start  ## delete, start and recreate infrastructure containers (applying the database migrations)

@@ -8,7 +8,7 @@ This must contain ONLY pure python objects.
 """
 
 from datetime import datetime
-from questrya.common.value_objects import Email
+from questrya.common.value_objects.email import Email
 from questrya.extensions import bcrypt
 
 

@@ -13,8 +13,8 @@ from questrya.extensions import bcrypt
 
 
 class UserService:
-    def __init__(self, user_repository: UserRepository):
-        self.user_repository = user_repository
+    def __init__(self):
+        self.user_repository = UserRepository()
 
     def register_user(self, username, email, password):
         if self.user_repository.get_by_email(email):

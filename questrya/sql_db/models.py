@@ -13,7 +13,7 @@ from datetime import datetime
 from uuid import uuid4
 
 
-class UserORMModel(db.Model):
+class UserSQLModel(db.Model):
     __tablename__ = 'users'
 
     uuid = db.Column(UUID(as_uuid=True), default=uuid4, primary_key=True)
