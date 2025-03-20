@@ -159,6 +159,10 @@ questrya/
 └── settings.py                # Configuration
 ```
 
+### Components breakdown diagram
+
+![Components breakdown diagram](./images/png/vertical-slice-architecture-detailed.png)
+
 ### Key Concepts Explained
 
 #### Value Objects
