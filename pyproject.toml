@@ -24,7 +24,8 @@ omit = [
     "*/conftest.py",
     "questrya/settings.py",
     "questrya/extensions.py",
-    "questrya/factory.py"
+    "questrya/factory.py",
+    "questrya/sql_db/*"  # this is because we use thin models that just leverage SQLAlchemy - and it has its own test suite on upstream
 ]
 
 [tool.coverage.report]
