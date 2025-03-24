@@ -14,6 +14,32 @@ pytest_plugins = [
     "questrya.common.tests.core_fixtures"
 ]
 
+# Coverage configuration
+[tool.coverage.run]
+source = ["questrya"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__pycache__/*",
+    "*/conftest.py",
+    "questrya/settings.py",
+    "questrya/extensions.py",
+    "questrya/factory.py"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError"
+]
+fail_under = 80  # Minimum code coverage percentage required
+show_missing = true
+
+
 [tool.ruff.format]
 quote-style = "single"
 exclude = ["migrations/**"]
