@@ -1,5 +1,5 @@
 """
-Fixtures must be manually registered on "pyproject.toml" at the project root folder.
+Fixtures must be manually registered on questrya/conftest.py
 """
 import pytest
 

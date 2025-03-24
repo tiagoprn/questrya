@@ -9,10 +9,6 @@ markers = [
     "unit: marks tests as unit tests",
     "integration: marks tests as integration tests"
 ]
-# Explicitly register the fixtures module
-pytest_plugins = [
-    "questrya.common.tests.core_fixtures"
-]
 
 # Coverage configuration
 [tool.coverage.run]
