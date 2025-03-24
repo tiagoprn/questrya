@@ -18,9 +18,7 @@ class Email:
         self._address = address.lower()  # Normalize to lowercase
 
     def __eq__(self, other):
-        if isinstance(other, Email):
-            return self._address == other._address
-        return False
+        return self._address == other._address
 
     def __str__(self):
         return self._address

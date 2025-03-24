@@ -38,7 +38,7 @@ class User:
 
     def update(self, email=None, password=None):
         if not self.uuid:
-            raise DomainException('You cannot update a user object that does not have a uuid.')
+            raise DomainException(message='You cannot update a user object that does not have a uuid.')
         if email:
             self.email = Email(email)
         if password:
