@@ -18,7 +18,7 @@ class User:
         self,
         username,
         email,
-        password_hash,
+        password,
         uuid=None,
         created_at=None,
         last_updated_at=None,
@@ -26,9 +26,12 @@ class User:
         self.uuid = uuid
         self.username = username
         self.email = Email(email)
-        self.password_hash = password_hash
+        self.password_hash = self.hash_password(password=password)
         self.created_at = created_at or datetime.utcnow()
         self.last_updated_at = last_updated_at or datetime.utcnow()
+
+    def hash_password(self, password: str):
+        return bcrypt.generate_password_hash(password=password).decode('utf-8')
 
     def check_password(self, password: str) -> bool:
         return bcrypt.check_password_hash(self.password_hash, password)
@@ -39,5 +42,5 @@ class User:
         if email:
             self.email = Email(email)
         if password:
-            self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+            self.password_hash = self.hash_password(password=password)
         self.last_updated_at = datetime.utcnow()

@@ -9,7 +9,6 @@ This must have the application use cases
 
 from questrya.users.repository import UserRepository
 from questrya.users.domain import User
-from questrya.extensions import bcrypt
 
 
 class UserService:
@@ -20,14 +19,12 @@ class UserService:
         if self.user_repository.get_by_email(email):
             raise ValueError('Email already registered')
 
-        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-
         # Create a domain object
         user = User(
             uuid=None,
             username=username,
             email=email,
-            password_hash=password_hash,
+            password=password
         )
         self.user_repository.save(user=user)
 
