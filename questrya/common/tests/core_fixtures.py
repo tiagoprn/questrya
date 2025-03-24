@@ -1,3 +1,6 @@
+"""
+Fixtures must be manually registered on "pyproject.toml" at the project root folder.
+"""
 import pytest
 
 from questrya.factory import create_app

@@ -3,7 +3,7 @@ import logging.config
 
 from decouple import config
 
-from questrya.commons import get_app_version
+from questrya.common.utils import get_app_version
 
 IS_DEV_APP = config('IS_DEV_APP', cast=bool)  # Queues
 

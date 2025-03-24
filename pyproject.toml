@@ -1,3 +1,19 @@
+[tool.pytest.ini_options]
+pythonpath = "."
+testpaths = ["questrya"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+# Add markers
+markers = [
+    "unit: marks tests as unit tests",
+    "integration: marks tests as integration tests"
+]
+# Explicitly register the fixtures module
+pytest_plugins = [
+    "questrya.common.tests.core_fixtures"
+]
+
 [tool.ruff.format]
 quote-style = "single"
 exclude = ["migrations/**"]
