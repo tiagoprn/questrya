@@ -18,15 +18,21 @@ class User:
         self,
         username,
         email,
-        password,
+        password=None,
         uuid=None,
+        password_hash=None,
         created_at=None,
         last_updated_at=None,
     ):
         self.uuid = uuid
         self.username = username
         self.email = Email(email)
-        self.password_hash = self.hash_password(password=password)
+
+        # TODO: test scenarios below for password_hash
+        if not password and not password_hash:
+            raise DomainException(message='User must be instantiated with either password or password_hash.')
+        self.password_hash = self.hash_password(password=password) if password else password_hash
+
         self.created_at = created_at or datetime.utcnow()
         self.last_updated_at = last_updated_at or datetime.utcnow()
 
