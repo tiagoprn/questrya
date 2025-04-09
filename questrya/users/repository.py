@@ -6,7 +6,9 @@ MUST NOT communicate with: Services, Routes
 
 This must be a translation layer between the ORM and the pure domain objects
 """
+from datetime import datetime
 
+from questrya.common.value_objects.email import Email
 from questrya.sql_db.models import UserSQLModel
 from questrya.extensions import db
 from questrya.users.domain import User
@@ -27,8 +29,8 @@ class UserRepository:
         return UserRepository.to_domain(user_model=db_user)
 
     @staticmethod
-    def get_by_email(email) -> User:
-        db_user = UserSQLModel.query.filter_by(email=email).first()
+    def get_by_email(email: Email) -> User:
+        db_user = UserSQLModel.query.filter_by(email=email.address).first()
         return UserRepository.to_domain(user_model=db_user)
 
     @staticmethod
@@ -48,7 +50,25 @@ class UserRepository:
         the domain user will be updated with the new properties
         (uuid, created_at, etc...)
         """
-        db_user = UserRepository.from_domain(user=user)
+        if getattr(user, 'uuid'):
+            # For existing users, fetch from DB first.
+            # If I do not do this, UserRepository.from_domain will create a new python object
+            # and SQLALchemy will treat the update as an INSERT rather than an UPDATE.
+            existing_db_user = UserSQLModel.query.filter_by(uuid=user.uuid).first()
+            if existing_db_user:
+                # Update fields from domain object
+                existing_db_user.username = user.username
+                existing_db_user.email = user.email.address
+                existing_db_user.password_hash = user.password_hash
+                existing_db_user.last_updated_at = datetime.utcnow()
+                db_user = existing_db_user
+            else:
+                db_user = UserRepository.from_domain(user=user)
+                db_user.last_updated_at = datetime.utcnow()
+        else:
+            # New user
+            db_user = UserRepository.from_domain(user=user)
+
         db.session.add(db_user)
         db.session.commit()
         db.session.refresh(db_user)
@@ -60,7 +80,7 @@ class UserRepository:
         domain_user = User(
             uuid=user_model.uuid,
             username=user_model.username,
-            email=user_model.email,
+            email=Email(user_model.email),
             password_hash=user_model.password_hash,
             created_at=user_model.created_at,
             last_updated_at=user_model.last_updated_at
