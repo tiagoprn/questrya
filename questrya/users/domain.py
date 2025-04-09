@@ -8,6 +8,8 @@ This must contain ONLY pure python objects.
 """
 
 from datetime import datetime
+from uuid import UUID
+
 from questrya.common.exceptions import DomainException
 from questrya.common.value_objects.email import Email
 from questrya.extensions import bcrypt
@@ -16,17 +18,17 @@ from questrya.extensions import bcrypt
 class User:
     def __init__(
         self,
-        username,
-        email,
-        password=None,
-        uuid=None,
-        password_hash=None,
-        created_at=None,
-        last_updated_at=None,
+        username: str,
+        email: Email,
+        password: str = None,
+        uuid: UUID = None,
+        password_hash: str = None,
+        created_at: datetime = None,
+        last_updated_at: datetime = None,
     ):
         self.uuid = uuid
         self.username = username
-        self.email = Email(email)
+        self.email = email
 
         if not password and not password_hash:
             raise DomainException(message='User must be instantiated with either password or password_hash.')
@@ -41,11 +43,11 @@ class User:
     def check_password(self, password: str) -> bool:
         return bcrypt.check_password_hash(self.password_hash, password)
 
-    def update(self, email=None, password=None):
+    def update(self, email: Email = None, password: str = None):
         if not self.uuid:
             raise DomainException(message='You cannot update a user object that does not have a uuid.')
         if email:
-            self.email = Email(email)
+            self.email = email
         if password:
             self.password_hash = self.hash_password(password=password)
         self.last_updated_at = datetime.utcnow()

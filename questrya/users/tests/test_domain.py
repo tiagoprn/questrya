@@ -15,9 +15,7 @@ class TestUserDomain:
         assert 'password_hash' not in domain_user_data_picard.keys()
         user_instance = User(**domain_user_data_picard)
         for key, value in domain_user_data_picard.items():
-            if key == 'email':
-                value = Email(value)
-            elif key == 'password':
+            if key == 'password':
                 assert getattr(user_instance, 'password_hash') != domain_user_data_picard['password']
                 continue
             assert getattr(user_instance, key) == value
@@ -28,8 +26,6 @@ class TestUserDomain:
         user_data['password_hash'] = 'hashed-12345678'
         user_instance = User(**user_data)
         for key, value in user_data.items():
-            if key == 'email':
-                value = Email(value)
             assert getattr(user_instance, key) == value
 
     def test_instantiate_user_must_fail_when_no_password_or_password_hash(self, domain_user_data_picard: Dict):
@@ -69,11 +65,11 @@ class TestUserDomain:
         original_created_at = user_instance.created_at
         original_updated_at = user_instance.last_updated_at
 
-        new_email = 'newpicard@enterprise.org'
+        new_email = Email('newpicard@enterprise.org')
 
         user_instance.update(email=new_email)
 
         assert isinstance(user_instance.email, Email)
-        assert user_instance.email == Email(new_email)
+        assert user_instance.email == new_email
         assert user_instance.created_at == original_created_at
         assert user_instance.last_updated_at > original_updated_at
