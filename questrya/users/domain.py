@@ -28,7 +28,6 @@ class User:
         self.username = username
         self.email = Email(email)
 
-        # TODO: test scenarios below for password_hash
         if not password and not password_hash:
             raise DomainException(message='User must be instantiated with either password or password_hash.')
         self.password_hash = self.hash_password(password=password) if password else password_hash
