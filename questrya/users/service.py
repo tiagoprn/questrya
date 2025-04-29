@@ -15,35 +15,30 @@ class UserService:
     def __init__(self):
         self.user_repository = UserRepository()
 
-    def register_user(self, username, email, password):
+    def register_user(self, username, email, password) -> User:
         if self.user_repository.get_by_email(email):
-            raise ValueError('Email already registered')
+            raise ValueError(f'Email already registered ({email})')
 
         # Create a domain object
         user = User(
-            uuid=None,
             username=username,
             email=email,
             password=password
         )
-        self.user_repository.save(user=user)
+        return self.user_repository.save(user=user)
 
-        return user
-
-    def update_user(self, uuid, email=None, password=None):
+    def update_user(self, uuid, email=None, password=None) -> User:
         user = self.user_repository.get_by_uuid(uuid)
         if not user:
-            raise ValueError('User not found')
+            raise ValueError(f'User not found (uuid="{uuid}")')
 
         # Convert ORM model to domain object using the repository method
         user.update(email=email, password=password)
-        self.user_repository.save(user=user)
+        return self.user_repository.save(user=user)
 
-        return user
-
-    def get_user(self, uuid):
+    def get_user(self, uuid) -> User:
         user = self.user_repository.get_by_uuid(uuid)
         if not user:
-            raise ValueError('User not found')
+            raise ValueError(f'User not found (uuid="{uuid}")')
 
         return user

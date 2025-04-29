@@ -77,6 +77,9 @@ class UserRepository:
 
     @staticmethod
     def to_domain(user_model: UserSQLModel) -> User:
+        if not user_model:
+            return None
+
         domain_user = User(
             uuid=user_model.uuid,
             username=user_model.username,
@@ -89,8 +92,11 @@ class UserRepository:
 
     @staticmethod
     def from_domain(user: User) -> UserSQLModel:
+        if not user:
+            return None
+
         db_user = UserSQLModel(
-            uuid=user.uuid,
+            uuid=user.uuid if user.uuid else None,
             username=user.username,
             email=user.email.address,  # Email is a Value Object with an 'address' property
             password_hash=user.password_hash,

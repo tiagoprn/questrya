@@ -124,6 +124,9 @@ class TestUserRepository:
         assert isinstance(domain_user.uuid, UUID)
         assert domain_user.username == db_user.username
         assert domain_user.email.address == db_user.email
+
         assert domain_user.password_hash == hashed_password
+        assert domain_user.check_password(password=domain_user_data_picard['password']) is True
+
         assert domain_user.created_at == db_user.created_at
         assert domain_user.last_updated_at == db_user.last_updated_at
