@@ -58,7 +58,7 @@ class UserRepository:
             if existing_db_user:
                 # Update fields from domain object
                 existing_db_user.username = user.username
-                existing_db_user.email = user.email.address
+                existing_db_user.email = user.email
                 existing_db_user.password_hash = user.password_hash
                 existing_db_user.last_updated_at = datetime.utcnow()
                 db_user = existing_db_user
