@@ -94,7 +94,7 @@ class TestUserRoutes:
 
     @patch('questrya.users.routes.user_service')
     def test_create_user_service_error(self, mock_user_service, test_client):
-        # Arrange
+        # GIVEN
         mock_user_service.register_user.side_effect = ValueError("User already exists")
 
         request_data = {
@@ -103,14 +103,14 @@ class TestUserRoutes:
             "password": "password123"
         }
 
-        # Act
+        # WHEN
         response = test_client.post(
             '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
 
-        # Assert
+        # THEN
         assert response.status_code == 400
         response_data = json.loads(response.data)
         assert 'error' in response_data
@@ -118,7 +118,7 @@ class TestUserRoutes:
 
     @patch('questrya.users.routes.user_service')
     def test_create_user_server_error(self, mock_user_service, test_client):
-        # Arrange
+        # GIVEN
         mock_user_service.register_user.side_effect = Exception("Database connection error")
 
         request_data = {
@@ -127,14 +127,14 @@ class TestUserRoutes:
             "password": "password123"
         }
 
-        # Act
+        # WHEN
         response = test_client.post(
             '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
 
-        # Assert
+        # THEN
         assert response.status_code == 500
         response_data = json.loads(response.data)
         assert 'error' in response_data
