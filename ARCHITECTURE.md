@@ -2,117 +2,25 @@
 
 ## Summary
 
-This application follows a **Layered Architecture** pattern that is tightly integrated with Flask and its ecosystem, particularly Flask-SQLAlchemy.
+This project implements Clean Architecture with a Feature-First approach, combining Domain-Driven Design principles with a practical organization strategy.
 
-## Details
+Instead of traditional horizontal layers (controllers, services, repositories) that span across the entire application, the codebase is organized around feature modules (users, auth, monitor) that then have the layers defined inside each one of them.
 
-1. **Flask-Centric Layered Architecture**:
-   - **API Layer**: Flask routes and blueprints in `pydo/api.py`
-   - **Data Access Layer**: SQLAlchemy ORM models directly serving as both domain entities and data models
-   - **Infrastructure Layer**: Extensions, configurations, and Celery integration
+## Characteristics
 
-2. **Framework Coupling**:
-   - Core entities (User, Task) directly inherit from `db.Model`, coupling domain logic to SQLAlchemy
-   - Application factory pattern (`create_app()`) is Flask-specific
-   - Authentication is implemented using Flask-JWT-Extended
-   - Error handling is tied to Flask's error handling mechanisms
+• Feature-Oriented: Each module represents a complete, independent feature rather than a technical layer
 
-3. **Practical Separation of Concerns**:
-   - Despite framework coupling, the code maintains good separation between different responsibilities
-   - API endpoints, database models, background tasks, and configuration are logically separated
-   - Testing is well-structured with appropriate fixtures and separation of test cases
+• Encapsulation: All necessary components (domain logic, repositories, services, API endpoints) reside within their respective feature modules, keeping related code together for better understanding
 
-## Classification
+• Modularity: Features are designed with minimal dependencies between each other, ensuring changes to one feature have minimal impact on others
 
-This is best described as a **Pragmatic Layered Architecture** that leverages Flask's ecosystem rather than a purist architectural approach. It prioritizes practical development patterns over strict architectural boundaries.
+• Contextual Clarity: Developers can understand and modify a complete feature in one location without navigating across disparate technical layers
 
-The application demonstrates a common real-world approach where:
+• Scalability: Easier to scale teams since developers can work on separate features without conflicts
 
-- Framework features are embraced rather than abstracted away;
+• Balanced Design: The structure maintains clean architecture principles while prioritizing practical maintainability
 
-- ORM models serve dual purposes as both domain entities and data models;
-
-- Business logic is on the models, following what's sometimes called the "Fat Models, Skinny Controllers" pattern.
-
-### "Fat Models, Skinny Controllers" pattern:
-
-Most of the business logic resides in the models rather than in the controllers (or in this case, API route handlers). The models are responsible not just for representing data structure but also for implementing business rules and operations. On the initial (and small) scope of this application this approach has advantages in keeping business logic centralized and reusable, but can potentially lead to large, complex model classes as the application grows.
-
-The implementation can be described as:
-
-1. The User model contains significant business logic:
-   - Password hashing and verification (hash, check_password)
-   - User registration and update operations (register, update)
-   - Query methods for retrieving users (get_by)
-
-2. In contrast, the API endpoints in pydo/api.py are relatively thin:
-   - They seem to primarily handle HTTP requests/responses
-   - Route parameters to the appropriate model methods
-   - Handle authentication via JWT decorators
-
-## Benefits of This Approach
-
-1. **Development Efficiency**: Direct use of Flask and SQLAlchemy features accelerates development
-2. **Framework Alignment**: Takes advantage of Flask's design patterns and conventions
-3. **Reduced Boilerplate**: Avoids extra abstraction layers that would be needed in a strict Clean Architecture
-4. **Practical Testability**: Still maintains good testability as evidenced by the comprehensive test suite
-
-This architecture represents a practical balance between architectural purity and development pragmatism, which is common and often appropriate for applications with small scale and minimal complexity.
-
----
-
-# ARCHITECTURE IMPROVEMENTS
-
-Here are potential improvements to the current "Fat Models" architecture to address growing complexity with minimal overhead.
-
-## Current Architecture Layout
-
-This application currently follows a "Fat Models, Skinny Controllers" pattern where most business logic resides in the models. While this approach serves us well, it may lead to increasingly complex model classes as the application grows.
-
-### Project Structure
-
-``` bash
-
-questrya/
-├── __init__.py
-├── api.py
-├── commons.py
-├── exceptions.py
-├── extensions.py
-├── factory.py
-├── models.py
-├── settings.py
-├── tasks.py
-└── tests
-    ├── __init__.py
-    ├── conftest.py
-    ├── test_api.py
-    ├── test_models.py
-    └── utils.py
-
-```
-
-## New Architecture Layout
-
-For this project, we will go with the "Vertical Slice Architecture".
-
-That is an architectural pattern where an application is structured around feature-based slices rather than traditional horizontal layers (such as controllers, services, repositories, etc.).
-
-Each "slice" represents a complete implementation of a feature, encapsulating all the necessary components like API, business logic, data access etc.
-
-Being based in features (), it provides a pragmatic balance between proper software design and development simplicity.
-
-By organizing code around features rather than technical layers and incorporating Celery for background processing, it improves cohesion while maintaining a clean separation of concerns.
-
-The architecture is scalable, testable, and follows SOLID principles without introducing unnecessary complexity.
-
-### Key Characteristics
-
-- **Feature-Oriented**: Each slice represents an independent feature rather than a technical layer.
-- **Encapsulation**: All necessary logic for a feature (business logic, orm, API, service, etc...) resides within its slice.
-- **Independence**: Slices are designed to minimize dependencies between each other, promoting modularity.
-- **Improves Maintainability**: Changes to a feature impact only its corresponding slice, reducing the risk of breaking unrelated functionality.
-- **Scalability**: Easier to scale teams since developers can work on separate slices without conflicts.
+This approach creates a codebase that is both well-structured and pragmatic, balancing architectural purity with development efficiency.
 
 ### Project structure
 
