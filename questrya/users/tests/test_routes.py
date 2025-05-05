@@ -9,8 +9,8 @@ from questrya.users.domain import User
 
 class TestUserRoutes:
     @patch('questrya.users.routes.user_service')
-    def test_create_user_success(self, mock_user_service, test_client):
-        # Arrange
+    def test_create_user_successfully(self, mock_user_service, test_client):
+        # GIVEN
         mock_user = MagicMock(spec=User)
         mock_user.uuid = UUID('12345678-1234-5678-1234-567812345678')
         mock_user_service.register_user.return_value = mock_user
@@ -21,26 +21,27 @@ class TestUserRoutes:
             "password": "password123"
         }
 
-        # Act
+        # WHEN
         response = test_client.post(
-            '/user',
+            '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
 
-        # Assert
+        # THEN
         assert response.status_code == 201
-        response_data = json.loads(response.data)
-        assert 'uuid' in response_data
-        assert response_data['uuid'] == '12345678-1234-5678-1234-567812345678'
 
         # Verify service was called with correct parameters
         mock_user_service.register_user.assert_called_once_with(
             "testuser", "test@example.com", "password123"
         )
 
-    def test_create_user_invalid_data(self, test_client):
-        # Test with invalid email
+        response_data = json.loads(response.data)
+        assert 'uuid' in response_data
+        assert response_data['uuid'] == '12345678-1234-5678-1234-567812345678'
+
+    def test_create_user_invalid_data_must_fail(self, test_client):
+        # invalid email
         request_data = {
             "username": "testuser",
             "email": "invalid-email",
@@ -48,16 +49,16 @@ class TestUserRoutes:
         }
 
         response = test_client.post(
-            '/user',
+            '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
 
         assert response.status_code == 400
         response_data = json.loads(response.data)
-        assert 'error' in response_data
+        assert 'invalid email address' in response_data['error'].lower()
 
-        # Test with short password
+        # short password
         request_data = {
             "username": "testuser",
             "email": "test@example.com",
@@ -65,16 +66,16 @@ class TestUserRoutes:
         }
 
         response = test_client.post(
-            '/user',
+            '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
 
         assert response.status_code == 400
         response_data = json.loads(response.data)
-        assert 'error' in response_data
+        assert 'password must be at least 8 characters long' in response_data['error'].lower()
 
-        # Test with empty username
+        # empty username
         request_data = {
             "username": "",
             "email": "test@example.com",
@@ -82,14 +83,14 @@ class TestUserRoutes:
         }
 
         response = test_client.post(
-            '/user',
+            '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
 
         assert response.status_code == 400
         response_data = json.loads(response.data)
-        assert 'error' in response_data
+        assert 'username cannot be empty' in response_data['error'].lower()
 
     @patch('questrya.users.routes.user_service')
     def test_create_user_service_error(self, mock_user_service, test_client):
@@ -104,7 +105,7 @@ class TestUserRoutes:
 
         # Act
         response = test_client.post(
-            '/user',
+            '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
@@ -128,7 +129,7 @@ class TestUserRoutes:
 
         # Act
         response = test_client.post(
-            '/user',
+            '/api/users/user',
             data=json.dumps(request_data),
             content_type='application/json'
         )
@@ -138,3 +139,7 @@ class TestUserRoutes:
         response_data = json.loads(response.data)
         assert 'error' in response_data
         assert response_data['error'] == "Database connection error"
+
+    # TODO: add tests for questrya.users.routes.update_user responses
+
+    # TODO: add tests for questrya.users.routes.get_user responses
