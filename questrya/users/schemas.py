@@ -21,7 +21,7 @@ class CreateUserRequest(BaseModel):
     def validate_email(cls, value):
         try:
             email = Email(value)
-            return email.address
+            return email
         except InvalidEmailError as e:
             raise ValueError(str(e))
 
