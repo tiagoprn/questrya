@@ -36,6 +36,8 @@ class TestUserRepository:
 
         original_email = domain_user.email
         new_email = Email('picard-new@enterprise.org')
+        assert isinstance(domain_user.email, Email)
+        assert isinstance(new_email, Email)
         domain_user.email = new_email
 
         # WHEN

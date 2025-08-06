@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 from uuid import UUID
 
 from questrya.users.domain import User
-# from questrya.common.value_objects.email import Email
+from questrya.common.value_objects.email import Email
 
 
 class TestUserCreateRoute:
@@ -33,7 +33,7 @@ class TestUserCreateRoute:
 
         # Verify service was called with correct parameters
         mock_user_service.register_user.assert_called_once_with(
-            "testuser", "test@example.com", "password123"
+            "testuser", Email("test@example.com"), "password123"
         )
 
         response_data = json.loads(response.data)
@@ -163,7 +163,6 @@ class TestUserUpdateRoute:
         # FIXME: continue from here, this was failing
         created_user = self.create_user_with_api(test_client)
 
-        # ---
         user_uuid = '12345678-1234-5678-1234-567812345678'
         mock_jwt_identity.return_value = user_uuid
 
