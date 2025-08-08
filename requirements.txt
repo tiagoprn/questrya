@@ -43,6 +43,8 @@ decorator==5.2.1
     #   ipython
 executing==2.2.0
     # via stack-data
+faker==37.5.3
+    # via -r requirements.in
 flasgger==0.9.7.1
     # via -r requirements.in
 flask==3.1.0
@@ -180,6 +182,7 @@ typing-extensions==4.12.2
 tzdata==2025.1
     # via
     #   celery
+    #   faker
     #   kombu
 vine==5.1.0
     # via

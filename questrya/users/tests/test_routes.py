@@ -3,8 +3,10 @@ import json
 from unittest.mock import patch, MagicMock
 from uuid import UUID
 
-from questrya.users.domain import User
 from questrya.common.value_objects.email import Email
+from questrya.users.domain import User
+from questrya.users.service import UserService
+from questrya.users.tests.data_factory import get_creation_data
 
 
 class TestUserCreateRoute:
@@ -142,12 +144,8 @@ class TestUserCreateRoute:
 
 
 class TestUserUpdateRoute:
-    def create_user_with_api(self, test_client):
-        request_data = {
-            "username": "testuser",
-            "email": "test@example.com",
-            "password": "password123"
-        }
+    def create_user_with_api(self, test_client) -> User:
+        request_data = get_creation_data()
         response = test_client.post(
             '/api/users/user',
             data=json.dumps(request_data),
@@ -155,21 +153,20 @@ class TestUserUpdateRoute:
         )
         assert response.status_code == 201
         response_data = response.json
-        print(response_data)
+
+        user_service = UserService()
+        user = user_service.get_user(uuid=response_data['uuid'])
+        return user
 
     @patch('questrya.users.routes.get_jwt_identity')
     def test_update_user_successfully(self, mock_jwt_identity, test_client):
         # GIVEN
+
         # FIXME: continue from here, this was failing
         created_user = self.create_user_with_api(test_client)
+        assert created_user.uuid
 
-        user_uuid = '12345678-1234-5678-1234-567812345678'
-        mock_jwt_identity.return_value = user_uuid
-
-        mock_user = MagicMock(spec=User)
-        mock_user.uuid = UUID(user_uuid)
-        mock_user.email = "updated@example.com"
-        # mock_user_service.update_user.return_value = mock_user
+        mock_jwt_identity.return_value = str(created_user.uuid)
 
         request_data = {
             "email": "updated@example.com",
@@ -195,7 +192,7 @@ class TestUserUpdateRoute:
 
         response_data = json.loads(response.data)
         assert 'uuid' in response_data
-        assert response_data['uuid'] == user_uuid
+        assert response_data['uuid'] == created_user.uuid
         assert response_data['email'] == "updated@example.com"
         assert response_data['password'] == "UPDATED"
 

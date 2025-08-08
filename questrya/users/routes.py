@@ -96,6 +96,8 @@ def update_user():
     try:
         user_uuid = get_jwt_identity()
 
+        print(f'update_user: user_uuid={user_uuid}')
+
         validated_data = UpdateUserRequest.model_validate(data)
 
         user = user_service.update_user(
